@@ -1,4 +1,5 @@
 <p align="center">
+    <img src="https://img.shields.io/github/workflow/status/OctopyID/LaravelVultrClient/Run%20Unit%20Testing?style=for-the-badge&label=tests" alt="Tests">
     <img src="https://img.shields.io/github/license/OctopyID/LaravelVultrClient.svg?style=for-the-badge" alt="License">
 </p>
 
