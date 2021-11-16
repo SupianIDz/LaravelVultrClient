@@ -1,0 +1,46 @@
+{
+  "name": "octopyid/laravel-vultr-client",
+  "description": "Vultr API Client",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Supian M",
+      "email": "supianidz@gmail.com"
+    },
+    {
+      "name": "Octopy ID",
+      "email": "hello@octopy.dev"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "guzzlehttp/guzzle": "^7.4",
+    "laravel/framework": "^8.70"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^6.23"
+  },
+  "autoload": {
+    "psr-4": {
+      "Octopy\\Vultr\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Octopy\\Vultr\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Octopy\\Vultr\\VultrServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
