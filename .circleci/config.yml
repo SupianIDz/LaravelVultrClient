@@ -38,3 +38,4 @@ jobs:
 
       # run tests with phpunit
       - run: ./vendor/bin/phpunit
+      
