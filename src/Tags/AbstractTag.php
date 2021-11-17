@@ -2,21 +2,21 @@
 
 namespace Octopy\Vultr\Tags;
 
-use Octopy\Vultr\Client\Contracts\ClientInterface;
+use Octopy\Vultr\Adapter\Contracts\AdapterInterface;
 use Octopy\Vultr\Tags\Contracts\TagInterface;
 
 abstract class AbstractTag implements TagInterface
 {
 	/**
-	 * @var string
+	 * @var bool
 	 */
-	public string $tagName;
+	protected bool $requireApiKey = false;
 
 	/**
-	 * @param  ClientInterface $client
+	 * @param  AdapterInterface $client
 	 */
-	public function __construct(protected ClientInterface $client)
+	public function __construct(protected AdapterInterface $client)
 	{
-		//
+		$this->client->requireApiKey($this->requireApiKey);
 	}
 }

@@ -4,7 +4,7 @@ Below is a list of what to do according to the Vultr API [documentation](https:/
 
 ## [#Account](https://www.vultr.com/api/#tag/account)
 
-- [ ] [Get Account Info](https://www.vultr.com/api/#operation/get-account)
+- [x] [Get Account Info](https://www.vultr.com/api/#operation/get-account)
 
 ## [#Applications](https://www.vultr.com/api/#tag/application)
 

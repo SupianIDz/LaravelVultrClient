@@ -18,4 +18,7 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <env name="API_KEY" value="fakeApiKey"/>
+    </php>
 </phpunit>

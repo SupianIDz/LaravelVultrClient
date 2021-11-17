@@ -6,6 +6,7 @@ use ArrayAccess;
 use Closure;
 use Octopy\Vultr\Config\Config;
 use Octopy\Vultr\Config\VultrAccount;
+use Throwable;
 
 class Vultr implements ArrayAccess
 {
@@ -52,7 +53,7 @@ class Vultr implements ArrayAccess
 	/**
 	 * @throws Exceptions\InvalidAccountNameException
 	 */
-	public function offsetGet($offset)
+	public function offsetGet($offset) : VultrAccount
 	{
 		return $this->config->getAccount($offset);
 	}
@@ -61,6 +62,8 @@ class Vultr implements ArrayAccess
 	 * @param  string              $offset
 	 * @param  VultrAccount|string $value
 	 * @return void
+	 * @throws Exceptions\DuplicatedTagException
+	 * @throws Throwable
 	 */
 	public function offsetSet($offset, $value) : void
 	{

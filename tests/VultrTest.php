@@ -2,29 +2,14 @@
 
 namespace Octopy\Vultr\Tests;
 
-use Illuminate\Support\Facades\App;
 use Octopy\Vultr\Config\Config;
 use Octopy\Vultr\Config\VultrAccount;
+use Octopy\Vultr\Exceptions\DuplicatedTagException;
 use Octopy\Vultr\Exceptions\InvalidAccountNameException;
-use Octopy\Vultr\Vultr;
+use Throwable;
 
 class VultrTest extends TestCase
 {
-	/**
-	 * @var Vultr
-	 */
-	protected Vultr $vultr;
-
-	/**
-	 * @return void
-	 */
-	protected function setUp() : void
-	{
-		parent::setUp();
-
-		$this->vultr = App::make(Vultr::class);
-	}
-
 	/**
 	 * @throws InvalidAccountNameException
 	 */
@@ -35,6 +20,8 @@ class VultrTest extends TestCase
 
 	/**
 	 * @return void
+	 * @throws DuplicatedTagException
+	 * @throws Throwable
 	 */
 	public function testAddCustomAccountUsingClosure()
 	{

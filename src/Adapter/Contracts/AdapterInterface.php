@@ -1,10 +1,10 @@
 <?php
 
-namespace Octopy\Vultr\Client\Contracts;
+namespace Octopy\Vultr\Adapter\Contracts;
 
 use Octopy\Vultr\Config\VultrAccount;
 
-interface ClientInterface
+interface AdapterInterface
 {
 	/**
 	 * @param  VultrAccount $account

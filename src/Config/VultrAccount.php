@@ -4,8 +4,9 @@ namespace Octopy\Vultr\Config;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
-use Octopy\Vultr\Client\Contracts\ClientInterface;
-use Octopy\Vultr\Client\DefaultClient;
+use JetBrains\PhpStorm\Pure;
+use Octopy\Vultr\Adapter\Contracts\AdapterInterface;
+use Octopy\Vultr\Adapter\DefaultAdapter;
 use Octopy\Vultr\Exceptions\DuplicatedTagException;
 use Octopy\Vultr\Tags\Contracts\TagInterface;
 use Throwable;
@@ -27,11 +28,11 @@ class VultrAccount
 	}
 
 	/**
-	 * @return ClientInterface
+	 * @return AdapterInterface
 	 */
-	public function getClient() : ClientInterface
+	public function getClient() : AdapterInterface
 	{
-		return new DefaultClient($this);
+		return new DefaultAdapter($this);
 	}
 
 	/**
@@ -122,10 +123,19 @@ class VultrAccount
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
-	public function getApiKey() : string
+	public function getApiKey() : string|null
 	{
 		return $this->apiKey;
+	}
+
+	/**
+	 * @return bool
+	 */
+	#[Pure]
+	public function hasApiKey() : bool
+	{
+		return $this->getApiKey() !== null && $this->getApiKey() !== '';
 	}
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace Octopy\Vultr\Client;
+namespace Octopy\Vultr\Adapter;
 
 use JetBrains\PhpStorm\ArrayShape;
 use Octopy\Vultr\Config\VultrAccount;
 
-abstract class AbstractClient implements Contracts\ClientInterface
+abstract class AbstractAdapter implements Contracts\AdapterInterface
 {
 	/**
 	 * @var string
@@ -18,6 +18,14 @@ abstract class AbstractClient implements Contracts\ClientInterface
 	public function __construct(protected VultrAccount $account)
 	{
 		//
+	}
+
+	/**
+	 * @return VultrAccount
+	 */
+	public function getAccount() : VultrAccount
+	{
+		return $this->account;
 	}
 
 	/**
