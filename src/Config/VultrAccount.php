@@ -3,7 +3,12 @@
 namespace Octopy\Vultr\Config;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
+use Octopy\Vultr\Client\Contracts\ClientInterface;
+use Octopy\Vultr\Client\DefaultClient;
+use Octopy\Vultr\Exceptions\DuplicatedTagException;
 use Octopy\Vultr\Tags\Contracts\TagInterface;
+use Throwable;
 
 class VultrAccount
 {
@@ -19,6 +24,14 @@ class VultrAccount
 	public function __construct(protected string|null $name = null, protected string|null $apiKey = null)
 	{
 		//
+	}
+
+	/**
+	 * @return ClientInterface
+	 */
+	public function getClient() : ClientInterface
+	{
+		return new DefaultClient($this);
 	}
 
 	/**
@@ -39,11 +52,43 @@ class VultrAccount
 	}
 
 	/**
-	 * @param  TagInterface $tag
+	 * @param  string $tag
+	 * @throws DuplicatedTagException|Throwable
 	 */
-	public function registerTag(TagInterface $tag)
+	public function registerTag(string $tag)
 	{
+		$tag = App::make($tag, [
+			'client' => $this->getClient(),
+		]);
+
+		throw_if($this->hasTag($tag->getTagName()), new DuplicatedTagException($tag->getTagName()));
+
 		$this->tags[$tag->getTagName()] = $tag;
+	}
+
+	/**
+	 * @param  string $tag
+	 * @return bool
+	 */
+	public function hasTag(string $tag) : bool
+	{
+		return isset($this->tags[$tag]);
+	}
+
+	/**
+	 * @param  string $tag
+	 */
+	public function removeTag(string $tag)
+	{
+		unset($this->tags[$tag]);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function removeTags()
+	{
+		$this->tags = [];
 	}
 
 	/**

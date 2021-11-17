@@ -14,7 +14,7 @@ class Tag
 	/**
 	 * @return Collection<string>
 	 */
-	public static function getTags() : Collection
+	public static function getDefaultTags() : Collection
 	{
 		return static::getIterator()
 			->map(function (SplFileInfo $fileInfo) {

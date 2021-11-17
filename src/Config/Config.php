@@ -3,14 +3,19 @@
 namespace Octopy\Vultr\Config;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\App;
-use Octopy\Vultr\Client\DefaultClient;
+use Octopy\Vultr\Exceptions\DuplicatedTagException;
 use Octopy\Vultr\Exceptions\InvalidAccountNameException;
+use Throwable;
 
 class Config
 {
 	/**
 	 * @var array
+	 */
+	protected array $tags = [];
+
+	/**
+	 * @var array<VultrAccount>
 	 */
 	protected array $accounts = [];
 
@@ -19,13 +24,30 @@ class Config
 	 */
 	public function __construct()
 	{
+		$this->tags = Tag::getDefaultTags()->toArray();
 		$this->registerAccountsFromConfigFile();
+	}
+
+	/**
+	 * @param  array|string $tags
+	 */
+	public function pushTag(array|string $tags) : void
+	{
+		if (is_string($tags)) {
+			$tags = [$tags];
+		}
+
+		$this->tags = array_merge($this->tags, $tags);
+
+		$this->mappingTagsToAccounts();
 	}
 
 	/**
 	 * @param  VultrAccount|string $name
 	 * @param  string|null         $apiKey
 	 * @return Config
+	 * @throws DuplicatedTagException
+	 * @throws Throwable
 	 */
 	public function addAccount(VultrAccount|string $name, string $apiKey = null) : static
 	{
@@ -34,15 +56,10 @@ class Config
 		}
 
 		$this->accounts[$name] = new VultrAccount($name, $apiKey);
-		$client = new DefaultClient($this->accounts[$name]);
 
-		Tag::getTags()->each(function ($tag) use ($name, $client) {
-			$this->accounts[$name]->registerTag(
-				App::make($tag, [
-					'client' => $client,
-				])
-			);
-		});
+		foreach ($this->tags as $tag) {
+			$this->accounts[$name]->registerTag($tag);
+		}
 
 		return $this;
 	}
@@ -118,6 +135,16 @@ class Config
 	{
 		foreach (config('vultr.accounts') as $name => $config) {
 			$this->addAccount($name, $config['key']);
+		}
+	}
+
+	protected function mappingTagsToAccounts()
+	{
+		foreach ($this->accounts as $account) {
+			$account->removeTags();
+			foreach ($this->tags as $tag) {
+				$account->registerTag($tag);
+			}
 		}
 	}
 }
